@@ -1,0 +1,8 @@
+2009-08-08
+- posted to SVN repository
+- Count trajectories or trajectory points? see
+report/identity-unique/summary.pdf 
+- "groups(trajectories) <- readgroups(groupfile)" bug fixed; no longer
+requires recreation of trajectories for each re-assignment of groups.
+
+
