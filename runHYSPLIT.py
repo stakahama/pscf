@@ -1,3 +1,11 @@
+####################
+## PSCF program
+## ~runHYSPLIT.py~
+## $Rev$
+## Sept. 2009
+## Satoshi Takahama (stakahama@ucsd.edu)
+####################
+
 import os
 import time
 
