@@ -124,6 +124,12 @@ optional).
 mp <- definemap("world",xlim=c(-110,-50),ylim=c(-60,5))
 @ 
 
+If map database is \verb~"world2"~, the longitudes have to be transformed (otherwise, leave unchanged). 
+<<>>=
+trajectories <- transform(trajectories,mp)
+@ 
+
+
 \subsection{Grid}
 Define grid. The following line will divide the box containing trajectory
 endpoints (both latittude and longitude) into 40 even-sized boxes.

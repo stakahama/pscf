@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%
 %% PSCF program
-%% ~PSCFdemo.tex~
+%% ~PSCFdemo.Rnw~
 %% $Rev$
 %% Sept. 2009
 %% Satoshi Takahama (stakahama@ucsd.edu)
@@ -132,6 +132,14 @@ optional).
 \end{Sinput}
 \end{Schunk}
 
+If map database is \verb~"world2"~, the longitudes have to be transformed (otherwise, leave unchanged). 
+\begin{Schunk}
+\begin{Sinput}
+> trajectories <- transform(trajectories, mp)
+\end{Sinput}
+\end{Schunk}
+
+
 \subsection{Grid}
 Define grid. The following line will divide the box containing trajectory
 endpoints (both latittude and longitude) into 40 even-sized boxes.
@@ -162,7 +170,7 @@ map; redefine if necessary.
 > showmap(mp, xygrid)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-011}
+\includegraphics{figures/fig-012}
 
 \section{Prepare the trajectories}
 
@@ -204,7 +212,7 @@ Show all trajectories (as 'spaghetti' and 'density'):
 > showmap(mp, trajectories, type = "density", groupindex = 0, gridlines = TRUE)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-014}
+\includegraphics{figures/fig-015}
 
 Next, visualize number of trajectories/ points per cell.
 
@@ -215,7 +223,7 @@ Next, visualize number of trajectories/ points per cell.
 > cumuldensp(trajectories)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-015}
+\includegraphics{figures/fig-016}
 
 We will only include grid cells for which the number of
 trajectories/points (count/cell) are above 10, approximately (values
@@ -240,7 +248,7 @@ code. Export with graphics desired device (e.g., \verb@pdf()@,
 +     cex.axis = 0.6)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-016}
+\includegraphics{figures/fig-017}
 
 \subsection{Additional examples: shiptracks, other projections (not run)}
 
@@ -348,7 +356,7 @@ difference in appearance.
 > title(main = grpname(trajectories, 1), cex.main = 1.2)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-022}
+\includegraphics{figures/fig-023}
 
 \subsection{Data extraction for export/ customization}
 
@@ -380,6 +388,6 @@ Or plot it in R using \verb@image()@ (which is called internally by
 > image(output, col = grey.colors(64), asp = 1)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-025}
+\includegraphics{figures/fig-026}
 
 \end{document}

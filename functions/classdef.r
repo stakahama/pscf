@@ -133,6 +133,16 @@ setMethod("overlay",c("Traj","XYGrid"), function(traj,xygrid,type,...) {
   traj@accumultype <- type    
   traj
 })
+setGeneric("transform",function(traj,mp) standardGeneric("transform"))
+setMethod("transform",c("Traj","Map"),function(traj,mp) {
+  if( mp@database=="world2" ) {
+    unwrap <- function(x) ifelse(x < 0, x + 360, x)
+    coords(trajectories)[,"lon"] <- lapply(coords(trajectories)[,"lon"],unwrap)
+    trajectories
+  } else {
+    trajectories
+  }
+})
 
 ## =======================================================
 ##  Split trajectories by group
