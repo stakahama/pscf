@@ -86,6 +86,9 @@ accumulator <- function(xygrid,coords,retIndex,n.interp=4,...) {
     ## returns a matrix
 
     sel <- which(wts > 0)
+
+    if( length(sel)==0 ) 
+      return(matrix(NA,nrow=length(xygrid$y),ncol=length(xygrid$x)))
     
     if( identical(type,identity) ) {
       ## method 1: count trajectory points (default)
@@ -112,7 +115,8 @@ accumulator <- function(xygrid,coords,retIndex,n.interp=4,...) {
       wtvec <-
         Map(function(w,x) rep(w,times=length(x)),
             wts[sel],indices)
-      agg <- aggregate(list(Wts=unlist(wtvec)),by=list(Index=unlist(indices)),
+      agg <- aggregate(list(Wts=unlist(wtvec)),
+                       by=list(Index=unlist(indices)),
                        sum,na.rm=TRUE)
     }
     ###

@@ -175,8 +175,9 @@ setMethod("prepareforvis",c("Traj","XYGrid"),function(traj,xygrid,...) {
   
   traj@funcs <- c(traj@funcs["diagnose"],list(spaghetti=function(i,...) {
     w <- (if( i==0 ) TRUE else wts[,i] > 0)
-    apply(coords(traj)[w,],1,function(X)
-          with(X,lines(mapproject(lon,lat),col=alpha("midnightblue"))))
+    if( any(w) )
+      apply(coords(traj)[w,,drop=FALSE],1,function(X)
+            with(X,lines(mapproject(lon,lat),col=alpha("midnightblue"))))
   },density=function(i,threshold=NULL,irreg=TRUE,ncol=64,ninterp=100) {
     s <- (if( i==0 ) t(campaigntot) else t(normalized[[i]]*campaigntot))
     s <- cth(s,threshold)
