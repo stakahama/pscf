@@ -7,12 +7,7 @@
 ####################
 
 ## ============== paths/files ======================
-Input_file <- "userinputs/input.txt"
-Exec_file <- "C:/hysplit4/exec/hymodelt.exe"
-Meteo_path <- "C:/hysplit4/metdata/"
-Output_path <- "./trajectories/"
-Output_base <- "tdump-"
-Control <- "CONTROL"
+eval(parse(text=readLines("userinputs/runHYSPLIT_parms.txt")))
 
 ## =============== process ======================
 filekey <- function(filename) {
@@ -20,8 +15,10 @@ filekey <- function(filename) {
   as.POSIXct(strptime(paste(x[,2],(as.integer(sub("w","",x[,3]))-1)*7+1),
                       "%b%y %d"),tz="GMT")
 }
-sortmeteo <- function(x)
-  x[order(filekey(x))]
+sortmeteo <- function(x) {
+  key <- filekey(x)
+  x[!is.na(key)][order(na.omit(key))]
+}
 Meteo_files <- sortmeteo(list.files(Meteo_path))
 Nmet <- length(Meteo_files)
 Nloc <- 1

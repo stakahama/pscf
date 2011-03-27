@@ -1,0 +1,6 @@
+Input_file = "userinputs/input.txt"
+Exec_file = "C:/hysplit4/exec/hymodelt.exe"
+Meteo_path = "C:/hysplit4/metdata/"
+Output_path = "./trajectories/"
+Output_base = "tdump-"
+Control = "CONTROL"
