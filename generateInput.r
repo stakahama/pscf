@@ -10,15 +10,15 @@ source("functions/time_functions.r")
 library(chron)
 
 ## === user input ===
-Start_lat <- 32.12
-Start_lon <- -116.97
-Start_alt <- c(1000,1200)
-Start_times <- seq.chron(from=strptime2chron("4/25/09 00:00:00"),
-                         to=strptime2chron("4/26/09 00:00:00"),
-                         by=times("02:00:00"))
+Start_lat <- 32.52
+Start_lon <- -117.03700
+Start_alt <- c(500,1000,2000) ##10
+Start_times <- seq(from=as.chron("5/15/10 00:00:00","%m/%d/%y %T"),
+                   to=as.chron("7/01/10 00:00:00","%m/%d/%y %T"),
+                   by=times("01:00:00"))
                                         # alternatively: by="hour"
                                         # and so on
-Run_hours <- -5
+Run_hours <- -6
 Vert_coord <- 0
 Model_top <- 1000000
 

@@ -8,6 +8,8 @@
 
 import os
 import time
+import operator
+import subprocess
 
 ## ============== paths/files ======================
 Input_file = 'userinputs/input.txt'
@@ -18,7 +20,10 @@ Output_base = 'tdump-'
 Control = 'CONTROL'
 
 ## =============== process ======================
-Meteo_files = [f for f in os.listdir(Meteo_path)]
+def filekey(filename):
+    x = filename.split('.')
+    return strptime(x[1],'%b%y')[:2] + (int(x[2][1]),)
+Meteo_files = sorted(os.listdir(Meteo_path), key=filekey)
 Nmet = len(Meteo_files)
 Nloc = 1
 
@@ -53,8 +58,9 @@ for row in infile[:3]:
                        row['Vert_coord'],
                        row['Model_top'],
                        Nmet] +
-                      zip([Meteo_path]*Nmet,Meteo_files) +
+                      list(reduce(operator.add,zip([Meteo_path]*Nmet,
+                                                   Meteo_files))) +
                       [Output_path,Output_file]))
     f.close()
-    os.system('%s' % str(Exec_file))
+    subprocess.call(Exec_file)
 
