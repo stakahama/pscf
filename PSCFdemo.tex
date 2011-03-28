@@ -73,12 +73,12 @@ Functions are located in a folder called \verb@functions/@, in
 \verb@classdef.r@, which contains definitions for object classes used here.\\
 
 \smallskip
-User inputs - tell us where your files are:
+User inputs -- tell us where your files are (\verb@Coords_file@ should be the same as the one defined in \verb@userinputs/runHYSPLIT_parms.txt@):
 
 \begin{Schunk}
 \begin{Sinput}
-> coordsfile <- "outputs/coords_vocals.rda"
-> groupfile <- "userinputs/groupfile-example_alcf.txt"
+> Coords_file <- "outputs/coords_vocals.rda"
+> Group_file <- "userinputs/groupfile-example_alcf.txt"
 \end{Sinput}
 \end{Schunk}
 
@@ -86,7 +86,7 @@ Your group file should look like this:
 
 \begin{Schunk}
 \begin{Sinput}
-> head(read.delim(groupfile, row.names = 1))
+> head(read.delim(Group_file, row.names = 1))
 \end{Sinput}
 \begin{Soutput}
                    Start               End Group
@@ -107,7 +107,7 @@ Read trajectories; shorten to 3 days (optional):
 
 \begin{Schunk}
 \begin{Sinput}
-> trajectories <- readtrajectories(coordsfile)
+> trajectories <- readtrajectories(Coords_file)
 > trajectories <- shorten(trajectories, ndays = 3)
 \end{Sinput}
 \end{Schunk}
@@ -132,10 +132,10 @@ optional).
 \end{Sinput}
 \end{Schunk}
 
-If map database is \verb~"world2"~, the longitudes have to be transformed (otherwise, leave unchanged). 
+If map database is \verb~"world2"~, the longitudes have to be ``unwrapped'' (otherwise, leave unchanged, which is determined within \verb~unwrap~). 
 \begin{Schunk}
 \begin{Sinput}
-> trajectories <- transform(trajectories, mp)
+> trajectories <- unwrap(trajectories, mp)
 \end{Sinput}
 \end{Schunk}
 
@@ -188,16 +188,20 @@ Overlay trajectories on the grid [the last argument can be either
 (See \verb@reports/identity-unique/summary.pdf@ for comparison between
 the two options.)\\
 
-Read in group file and prepare trajectory object for visualization; attach data
-to 'trajectories' object. If new groups are desired, rerun from this point on
-(do not have to reload trajectories).
+Read in group file and prepare trajectory object for visualization
+(intermediate step, call to \verb@addfirst@, will add first diagnostic
+function to \verb@trajectories@); also attach data to \verb@trajectories@
+object. If new groups are desired, rerun from this point on (do not
+have to reload trajectories).
 
 \begin{Schunk}
 \begin{Sinput}
-> groups(trajectories) <- readgroups(groupfile)
+> groups(trajectories) <- readgroups(Group_file)
+> trajectories <- addfirst(trajectories)
 > trajectories <- prepareforvis(trajectories, xygrid)
 \end{Sinput}
 \end{Schunk}
+an additional argument, \verb@colorvar@, can be passed to \verb@add_diagnosefn@, which will color the trajectories. For instance, \verb@sub(``.+\\_([0-9]+)$'',''\\1'',rownames(coords(trajectories)))@ will color by altitude.
 
 \section{Plotting trajectories}
 

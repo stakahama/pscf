@@ -80,18 +80,18 @@ Functions are located in a folder called \verb@functions/@, in
 \verb@classdef.r@, which contains definitions for object classes used here.\\
 
 \smallskip
-User inputs - tell us where your files are:
+User inputs -- tell us where your files are (\verb@Coords_file@ should be the same as the one defined in \verb@userinputs/runHYSPLIT_parms.txt@):
 
 <<>>=
-coordsfile <- "outputs/coords_vocals.rda"
-groupfile <- "userinputs/groupfile-example_alcf.txt"
+Coords_file <- "outputs/coords_vocals.rda"
+Group_file <- "userinputs/groupfile-example_alcf.txt"
 
 @ 
 
 Your group file should look like this:
 
 <<>>=
-head(read.delim(groupfile,row.names=1))
+head(read.delim(Group_file,row.names=1))
 
 @ 
 
@@ -102,7 +102,7 @@ head(read.delim(groupfile,row.names=1))
 Read trajectories; shorten to 3 days (optional):
 
 <<>>=
-trajectories <- readtrajectories(coordsfile) 
+trajectories <- readtrajectories(Coords_file) 
 trajectories <- shorten(trajectories,ndays=3)
 
 @ 
@@ -124,9 +124,9 @@ optional).
 mp <- definemap("world",xlim=c(-110,-50),ylim=c(-60,5))
 @ 
 
-If map database is \verb~"world2"~, the longitudes have to be transformed (otherwise, leave unchanged). 
+If map database is \verb~"world2"~, the longitudes have to be ``unwrapped'' (otherwise, leave unchanged, which is determined within \verb~unwrap~). 
 <<>>=
-trajectories <- transform(trajectories,mp)
+trajectories <- unwrap(trajectories,mp)
 @ 
 
 
@@ -171,15 +171,19 @@ trajectories <- overlay(trajectories,xygrid,identity)
 (See \verb@reports/identity-unique/summary.pdf@ for comparison between
 the two options.)\\
 
-Read in group file and prepare trajectory object for visualization; attach data
-to 'trajectories' object. If new groups are desired, rerun from this point on
-(do not have to reload trajectories).
+Read in group file and prepare trajectory object for visualization
+(intermediate step, call to \verb@addfirst@, will add first diagnostic
+function to \verb@trajectories@); also attach data to \verb@trajectories@
+object. If new groups are desired, rerun from this point on (do not
+have to reload trajectories).
 
 <<>>=
-groups(trajectories) <- readgroups(groupfile)
+groups(trajectories) <- readgroups(Group_file)
+trajectories <- addfirst(trajectories)
 trajectories <- prepareforvis(trajectories,xygrid)
 
 @ 
+an additional argument, \verb@colorvar@, can be passed to \verb@add_diagnosefn@, which will color the trajectories. For instance, \verb@sub(``.+\\_([0-9]+)$'',''\\1'',rownames(coords(trajectories)))@ will color by altitude.
 
 \section{Plotting trajectories}
 

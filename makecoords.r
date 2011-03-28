@@ -7,10 +7,11 @@
 ####################
 
 source("functions/forcoords.r")
-coords <- makecoords(folder="trajectories/",
-                     prefix="tdump-")
+eval(parse(text=readLines("userinputs/runHYSPLIT_parms.txt")))
+coords <- makecoords(folder=Output_path,
+                     prefix=Output_base)
                                         # note: 
                                         # folder is the same as Output_path
                                         # prefix is the same as Output_base
                                         # from 'runHYSPLIT.py'
-save(coords,file="outputs/coords.rda")
+save(coords,file=Coords_file)

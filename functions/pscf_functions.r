@@ -28,6 +28,9 @@ distfromgrid <- function(xygrid) {
   longrid <- t(makegrid(xygrid$x,xygrid$y))
   function(lon,lat)
     which.min((longrid-lon)^2+(latgrid-lat)^2)
+    ## apply(outer(c(longrid),c(lon),`-`)^2 +
+    ##       outer(c(latgrid),c(lat),`-`)^2,2,
+    ##       which.min)
 }
 
 ## =======================================================
@@ -83,38 +86,51 @@ accumulator <- function(xygrid,coords,retIndex,n.interp=4,...) {
                          lapply(coords[,1:2],na.omit))
                                 
   function(wts,type=unique) {
+
     ## returns a matrix
 
     sel <- which(wts > 0)
 
     if( length(sel)==0 ) 
       return(matrix(NA,nrow=length(xygrid$y),ncol=length(xygrid$x)))
-    
+
     if( identical(type,identity) ) {
       ## method 1: count trajectory points (default)
       ## type == identity()
       
+      ## indices <- mapply(retIndex,
+      ##                   do.call(cbind,icoords[sel,"lon"]),
+      ##                   do.call(cbind,icoords[sel,"lat"]))
       indices <- mapply(retIndex,
-                        do.call(cbind,icoords[sel,"lon"]),
-                        do.call(cbind,icoords[sel,"lat"]))
+                        unlist(icoords[sel,"lon"]),
+                        unlist(icoords[sel,"lat"]))
+      
+      ## indices <- retIndex(do.call(cbind,icoords[sel,"lon"]),
+      ##                     do.call(cbind,icoords[sel,"lat"]))
+      
       wtvec <-
-        mapply(function(w,x) rep(w,times=length(x)),
+        mapply(function(w,x) rep(w,times=length(unlist(x))),
                wts[sel],icoords[sel,"lat"])
+      ## rep(wts[sel],sapply(icoords[sel,"lat"],length))        
+
       agg <- aggregate(list(Wts=c(wtvec)),by=list(Index=c(indices)),
                        sum,na.rm=TRUE)
+      
     } else if( identical(type,unique) ) {
       ## method 2: count trajectories
       ## type == unique()
       ## (more general; can actually be used for method 1 but
       ## repeated call to identity() creates overhead.)
       
-      indices <- Map(function(x,y,f,g) g(f(x,y)),
+      indices <- Map(function(x,y,fn) type(fn(x,y)),
                      icoords[sel,"lon"],
                      icoords[sel,"lat"],
-                     MoreArgs=list(f=Vectorize(retIndex),g=type))
+                     MoreArgs=list(fn=Vectorize(retIndex)))
+
       wtvec <-
-        Map(function(w,x) rep(w,times=length(x)),
+        Map(function(w,x) rep(w,times=length(unlist(x))),
             wts[sel],indices)
+      
       agg <- aggregate(list(Wts=unlist(wtvec)),
                        by=list(Index=unlist(indices)),
                        sum,na.rm=TRUE)
@@ -154,7 +170,7 @@ getmapc <- function(db,xlim,ylim) {
 ## =======================================================
 addgrid <- function(mp,xlim=NULL,ylim=NULL) {
   if(is.null(xlim) || is.null(ylim)) lim <- mp else lim <- c(xlim,ylim)
-    map.grid(lim,lty=1,lab=FALSE,col=alpha("grey90"),xpd=TRUE)
+    map.grid(lim,lty=1,lab=FALSE,col=alpha(grey(.7)),xpd=TRUE)
   }
 alpha <- function(x) do.call(rgb,as.list(c(col2rgb(x)/255,alpha=0.35)))
 addlegend <- function(m1=10,m2=1,m3=10,m4=3,...) {

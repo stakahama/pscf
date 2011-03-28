@@ -1,11 +1,3 @@
-####################
-## PSCF program
-## ~PSCFdemo.R~
-## $Rev$
-## Sept. 2009
-## Satoshi Takahama (stakahama@ucsd.edu)
-####################
-
 ###################################################
 ### chunk number 1:  eval=FALSE
 ###################################################
@@ -47,22 +39,22 @@ options(stringsAsFactors=FALSE)
 ###################################################
 ### chunk number 4: 
 ###################################################
-coordsfile <- "outputs/coords_vocals.rda"
-groupfile <- "userinputs/groupfile-example_alcf.txt"
+Coords_file <- "outputs/coords_vocals.rda"
+Group_file <- "userinputs/groupfile-example_alcf.txt"
 
 
 
 ###################################################
 ### chunk number 5: 
 ###################################################
-head(read.delim(groupfile,row.names=1))
+head(read.delim(Group_file,row.names=1))
 
 
 
 ###################################################
 ### chunk number 6: 
 ###################################################
-trajectories <- readtrajectories(coordsfile) 
+trajectories <- readtrajectories(Coords_file) 
 trajectories <- shorten(trajectories,ndays=3)
 
 
@@ -83,18 +75,24 @@ mp <- definemap("world",xlim=c(-110,-50),ylim=c(-60,5))
 ###################################################
 ### chunk number 9: 
 ###################################################
+trajectories <- transform(trajectories,mp)
+
+
+###################################################
+### chunk number 10: 
+###################################################
 xygrid <- definegrid(traj=trajectories,len=40)
 
 
 
 ###################################################
-### chunk number 10:  eval=FALSE
+### chunk number 11:  eval=FALSE
 ###################################################
 ## xygrid <- definegrid(longrid=seq(-95,50,5),latgrid=seq(35,93,3))
 
 
 ###################################################
-### chunk number 11: 
+### chunk number 12: 
 ###################################################
 par(mfrow=c(1,2),mar=rep(1,4))
 showmap(mp,gridlines=TRUE)
@@ -103,22 +101,23 @@ showmap(mp,xygrid)
 
 
 ###################################################
-### chunk number 12: 
+### chunk number 13: 
 ###################################################
 trajectories <- overlay(trajectories,xygrid,identity)
 
 
 
 ###################################################
-### chunk number 13: 
+### chunk number 14: 
 ###################################################
-groups(trajectories) <- readgroups(groupfile)
+groups(trajectories) <- readgroups(Group_file)
+trajectories <- addfirst(trajectories)
 trajectories <- prepareforvis(trajectories,xygrid)
 
 
 
 ###################################################
-### chunk number 14: 
+### chunk number 15: 
 ###################################################
 
 par(mfrow=c(1,2),mar=rep(1,4))
@@ -130,14 +129,14 @@ showmap(mp,trajectories,
 
 
 ###################################################
-### chunk number 15: 
+### chunk number 16: 
 ###################################################
   par(mfrow=c(1,1),mar=c(4.5,4.5,1.5,1.5),mgp=c(2.5,1,0),pty="s")
   cumuldensp(trajectories)
 
 
 ###################################################
-### chunk number 16: 
+### chunk number 17: 
 ###################################################
 
 ngr <- length(groups(trajectories))
@@ -153,7 +152,7 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 17:  eval=FALSE
+### chunk number 18:  eval=FALSE
 ###################################################
 ## shiptrack <-
 ##   lapply(colnames(coords(trajectories))[2:1],function(x,y)
@@ -161,14 +160,14 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 18:  eval=FALSE
+### chunk number 19:  eval=FALSE
 ###################################################
 ## mp <- definemap("world")
 ## 
 
 
 ###################################################
-### chunk number 19:  eval=FALSE
+### chunk number 20:  eval=FALSE
 ###################################################
 ## showmap(mp,shiptrack=shiptrack,
 ##         projection="orthographic",orientation=c(90,0,-12.5))
@@ -176,7 +175,7 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 20:  eval=FALSE
+### chunk number 21:  eval=FALSE
 ###################################################
 ## par(mfrow=c(1,2),mar=rep(1,4))
 ## showmap(mp,gridlines=TRUE)
@@ -185,7 +184,7 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 21:  eval=FALSE
+### chunk number 22:  eval=FALSE
 ###################################################
 ## 
 ## ngr <- length(groups(trajectories))
@@ -203,7 +202,7 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 22: 
+### chunk number 23: 
 ###################################################
 showmap(mp,trajectories,type="pscf",gridlines=TRUE,groupindex=1,ninterp=30)
 title(main=grpname(trajectories,1),cex.main=1.2)
@@ -211,13 +210,13 @@ title(main=grpname(trajectories,1),cex.main=1.2)
 
 
 ###################################################
-### chunk number 23: 
+### chunk number 24: 
 ###################################################
 output <- extract(trajectories,type="pscf",groupindex=1,threshold=0.4)
 
 
 ###################################################
-### chunk number 24:  eval=FALSE
+### chunk number 25:  eval=FALSE
 ###################################################
 ## write(output$x,file="xvalues.txt",ncol=1)
 ## write(output$y,file="yvalues.txt",ncol=1)
@@ -225,7 +224,7 @@ output <- extract(trajectories,type="pscf",groupindex=1,threshold=0.4)
 
 
 ###################################################
-### chunk number 25: 
+### chunk number 26: 
 ###################################################
 image(output,col=grey.colors(64),asp=1)
 

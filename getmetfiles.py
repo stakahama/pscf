@@ -16,8 +16,8 @@ import subprocess
 
 ###_* user inputs
 
-Input_file = 'userinputs/input.txt'
-datadir = 'C:/hysplit4/metdata' 
+## for Input_file and Meteo_path
+execfile('userinputs/runHYSPLIT_parms.txt')
 
 ###_ . data archive and filename format
 
@@ -62,11 +62,8 @@ files.reverse()
 ###_* retrieve files
 
 here = os.getcwd()
-os.chdir(datadir)
+os.chdir(Meteo_path)
 for x in files:
-    if os.path.exists(x):
-        continue
     print x
     subprocess.call(' '.join([getfn,os.path.join(base,x)]),shell=True)
 os.chdir(here)
-

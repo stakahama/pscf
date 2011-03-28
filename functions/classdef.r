@@ -34,6 +34,7 @@ setClass("Traj",
                         groups="list",
                         accumulate="function",
                         accumultype="function",
+                        wts="matrix",                        
                         tmwt="function",
                         funcs="list"))
 readtrajectories <- function(fi) {
@@ -46,8 +47,8 @@ readtrajectories <- function(fi) {
   traj
 }
 readgroups <- function(groupfilename,fmt="%m/%d/%y %H:%M:%S")
-  (function(x) split(df2chron(x[1:2],fmt),x$Group)
-            )(read.delim(groupfilename,row.names=1,as.is=TRUE))
+  ((function(x) split(df2chron(x[1:2],fmt),x$Group))
+   (read.delim(groupfilename,row.names=1,as.is=TRUE)))
 
 ## =======================================================
 ##  Getter/setter functions
@@ -130,17 +131,17 @@ setMethod("overlay",c("Traj","XYGrid"), function(traj,xygrid,type,...) {
   retIndex <- distfromgrid(gr(xygrid))
   traj@accumulate <- accumulator(gr(xygrid),coords(traj),retIndex,...)
   traj@tmwt <- timeweights(coords(traj),...)
-  traj@accumultype <- type    
+  traj@accumultype <- type
   traj
 })
-setGeneric("transform",function(traj,mp) standardGeneric("transform"))
-setMethod("transform",c("Traj","Map"),function(traj,mp) {
+setGeneric("unwrap",function(traj,mp) standardGeneric("unwrap"))
+setMethod("unwrap",c("Traj","Map"),function(traj,mp) {
   if( mp@database=="world2" ) {
-    unwrap <- function(x) ifelse(x < 0, x + 360, x)
-    coords(trajectories)[,"lon"] <- lapply(coords(trajectories)[,"lon"],unwrap)
-    trajectories
+    fn <- function(x) ifelse(x < 0, x + 360, x)
+    coords(traj)[,"lon"] <- lapply(coords(traj)[,"lon"],fn)
+    traj
   } else {
-    trajectories
+    traj
   }
 })
 
@@ -150,12 +151,9 @@ setGeneric("prepareforvis",function(traj,xygrid,...)
            standardGeneric("prepareforvis"))
 setMethod("prepareforvis",c("Traj","XYGrid"),function(traj,xygrid,...) {
   ## Apply functions
-  wts <- sapply(traj@groups,function(R)
-                rowSums(apply(R,1,function(X)
-                              do.call(traj@tmwt,as.list(X)))))
-  totwts <- rowSums(wts)
+  totwts <- rowSums(traj@wts)
   campaigntot <- traj@accumulate(totwts,traj@accumultype)
-  normalized <- lapply(split(wts,col(wts)),function(x,y,f)
+  normalized <- lapply(split(traj@wts,col(traj@wts)),function(x,y,f)
                        traj@accumulate(x,f)/y,campaigntot,
                        traj@accumultype)
   
@@ -173,16 +171,11 @@ setMethod("prepareforvis",c("Traj","XYGrid"),function(traj,xygrid,...) {
           add=TRUE,ann=FALSE,axes=FALSE)
     })    
   
-  traj@funcs <- c(traj@funcs["diagnose"],list(spaghetti=function(i,...) {
-    w <- (if( i==0 ) TRUE else wts[,i] > 0)
-    if( any(w) )
-      apply(coords(traj)[w,,drop=FALSE],1,function(X)
-            with(X,lines(mapproject(lon,lat),col=alpha("midnightblue"))))
-  },density=function(i,threshold=NULL,irreg=TRUE,ncol=64,ninterp=100) {
+  traj@funcs <- c(traj@funcs[c("diagnose","spaghetti")],list(density=function(i,threshold=NULL,irreg=TRUE,ncol=64,ninterp=100,...) {
     s <- (if( i==0 ) t(campaigntot) else t(normalized[[i]]*campaigntot))
     s <- cth(s,threshold)
     if(irreg) eval(irreg_grid) else eval(reg_grid)
-  },pscf=function(i,threshold=NULL,irreg=TRUE,ncol=64,ninterp=100) {
+  },pscf=function(i,threshold=NULL,irreg=TRUE,ncol=64,ninterp=100,...) {
     s <- cth(t(normalized[[i]]),threshold)
     if(irreg) eval(irreg_grid) else eval(reg_grid)    
   }))
@@ -193,7 +186,7 @@ setMethod("prepareforvis",c("Traj","XYGrid"),function(traj,xygrid,...) {
 ## syntax of showmap() closely.
 setGeneric("extract",function(traj,type,...) standardGeneric("extract"))
 setMethod("extract","Traj",function(traj,type,...) {
-  ## example usage
+  ## ----- example usage -----
   ## source("functions/extract.r")
   ## output <- extract(trajectories,type="pscf",groupindex=1)
   ## image(output)
@@ -207,6 +200,29 @@ setMethod("extract","Traj",function(traj,type,...) {
   do.call(f,(function(x) `names<-`(x,sub("^groupindex$","i",names(x))))(list(...)))
 })
 
+setGeneric("addfirst",function(traj,colorvar=NULL)
+           standardGeneric("addfirst"))
+setMethod("addfirst","Traj",function(traj,colorvar=NULL) {
+  if( !is.null(colorvar) ) 
+    coords(traj) <- cbind(coords(traj),colorvar=as.list(colorvar))
+  if(length(traj@groups)>0) {
+    traj@wts <- sapply(traj@groups,function(R)
+                       rowSums(apply(R,1,function(X)
+                                     do.call(traj@tmwt,as.list(X)))))
+  }
+  traj@funcs <- c(traj@funcs["diagnose"],spaghetti=function(i,trajcols=NULL,...) {
+    w <- (if( i==0 || nrow(traj@wts)==0 ) TRUE else traj@wts[,i] > 0)
+    if( any(w) )
+      apply(coords(traj)[w,,drop=FALSE],1,function(X)
+            with(X,lines(mapproject(lon,lat),
+                         col=if(is.null(trajcols))
+                         alpha("midnightblue") else
+                         alpha(trajcols[colorvar]))))
+  })
+  traj
+})
+
+
 ## =======================================================
 ##  Map visualizations
 ## =======================================================
@@ -216,7 +232,8 @@ mpj <-
     rpv <- function(x,val) if(!is.null(x)) x else val    
     zerolist2null <- function(x) if(length(x) > 0) x else NULL
     ##
-    parms <- c(parms,"shiptrack","gridlines","threshold","irregulargrid")
+    parms <- c(parms,"shiptrack","gridlines","threshold","irregulargrid",
+               "trajcols")
     args <- list(...)
     exargs <- zerolist2null(args[!names(args) %in% parms])
     mplist <- (function(x) x[sapply(x,length)>0]
@@ -235,11 +252,13 @@ mpj <-
              pch=3)
     ## add trajectories    
     if( "trajectories" %in% toadd )
-      obj1@funcs[[args$type]](args$groupindex,args$threshold,
+      obj1@funcs[[args$type]](i=args$groupindex,
+                              threshold=args$threshold,
                               irreg=rpv(args[["irregulargrid"]],TRUE),
-                              ninterp=args$ninterp)
+                              ninterp=args$ninterp,
+                              trajcols=args$trajcols)
     ## draw borders
-    do.call(map,c(mplist,list(col=8,add=TRUE,wrap=TRUE),exargs))
+    do.call(map,c(mplist,list(col=grey(.15),add=TRUE,wrap=TRUE),exargs))
     ## add shiptrack
     if( !is.null(args$shiptrack) )
       lines(do.call(mapproject,args$shiptrack),col="maroon",lwd=2)
@@ -251,3 +270,4 @@ setMethod("showmap","Map",mpj("",""))
 setMethod("showmap",c("Map","XYGrid"),mpj("","grid"))
 setMethod("showmap",c("Map","Traj"),
           mpj(c("groupindex","type","gridlines"),"trajectories") )
+
