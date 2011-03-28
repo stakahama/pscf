@@ -53,6 +53,6 @@ for( i in 1:nrow(infile) ) {
            Output_path,                             ## outpath
            Output_file,                             ## outfile
            sep="\n",
-           filename=Control))
+           file=Control))
   system(Exec_file)
 }

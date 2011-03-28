@@ -18,7 +18,7 @@ Start_times <- seq(from=as.chron("5/15/10 00:00:00","%m/%d/%y %T"),
                    by=times("01:00:00"))
                                         # alternatively: by="hour"
                                         # and so on
-Run_hours <- -6
+Run_hours <- -144
 Vert_coord <- 0
 Model_top <- 1000000
 
