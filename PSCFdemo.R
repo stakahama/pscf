@@ -75,7 +75,7 @@ mp <- definemap("world",xlim=c(-110,-50),ylim=c(-60,5))
 ###################################################
 ### chunk number 9: 
 ###################################################
-trajectories <- transform(trajectories,mp)
+trajectories <- unwrap(trajectories,mp)
 
 
 ###################################################
@@ -101,14 +101,21 @@ showmap(mp,xygrid)
 
 
 ###################################################
-### chunk number 13: 
+### chunk number 13:  eval=FALSE
+###################################################
+## showmap(trajectories,mp,type="spaghetti")
+## 
+
+
+###################################################
+### chunk number 14: 
 ###################################################
 trajectories <- overlay(trajectories,xygrid,identity)
 
 
 
 ###################################################
-### chunk number 14: 
+### chunk number 15: 
 ###################################################
 groups(trajectories) <- readgroups(Group_file)
 trajectories <- addfirst(trajectories)
@@ -117,7 +124,7 @@ trajectories <- prepareforvis(trajectories,xygrid)
 
 
 ###################################################
-### chunk number 15: 
+### chunk number 16: 
 ###################################################
 
 par(mfrow=c(1,2),mar=rep(1,4))
@@ -129,14 +136,14 @@ showmap(mp,trajectories,
 
 
 ###################################################
-### chunk number 16: 
+### chunk number 17: 
 ###################################################
   par(mfrow=c(1,1),mar=c(4.5,4.5,1.5,1.5),mgp=c(2.5,1,0),pty="s")
   cumuldensp(trajectories)
 
 
 ###################################################
-### chunk number 17: 
+### chunk number 18: 
 ###################################################
 
 ngr <- length(groups(trajectories))
@@ -152,7 +159,7 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 18:  eval=FALSE
+### chunk number 19:  eval=FALSE
 ###################################################
 ## shiptrack <-
 ##   lapply(colnames(coords(trajectories))[2:1],function(x,y)
@@ -160,14 +167,14 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 19:  eval=FALSE
+### chunk number 20:  eval=FALSE
 ###################################################
 ## mp <- definemap("world")
 ## 
 
 
 ###################################################
-### chunk number 20:  eval=FALSE
+### chunk number 21:  eval=FALSE
 ###################################################
 ## showmap(mp,shiptrack=shiptrack,
 ##         projection="orthographic",orientation=c(90,0,-12.5))
@@ -175,7 +182,7 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 21:  eval=FALSE
+### chunk number 22:  eval=FALSE
 ###################################################
 ## par(mfrow=c(1,2),mar=rep(1,4))
 ## showmap(mp,gridlines=TRUE)
@@ -184,7 +191,7 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 22:  eval=FALSE
+### chunk number 23:  eval=FALSE
 ###################################################
 ## 
 ## ngr <- length(groups(trajectories))
@@ -202,7 +209,7 @@ addlegend(m1=2,m2=1.5,m3=2,m4=2,mgp=c(2,.5,0),cex.axis=0.6)
 
 
 ###################################################
-### chunk number 23: 
+### chunk number 24: 
 ###################################################
 showmap(mp,trajectories,type="pscf",gridlines=TRUE,groupindex=1,ninterp=30)
 title(main=grpname(trajectories,1),cex.main=1.2)
@@ -210,13 +217,13 @@ title(main=grpname(trajectories,1),cex.main=1.2)
 
 
 ###################################################
-### chunk number 24: 
+### chunk number 25: 
 ###################################################
 output <- extract(trajectories,type="pscf",groupindex=1,threshold=0.4)
 
 
 ###################################################
-### chunk number 25:  eval=FALSE
+### chunk number 26:  eval=FALSE
 ###################################################
 ## write(output$x,file="xvalues.txt",ncol=1)
 ## write(output$y,file="yvalues.txt",ncol=1)
@@ -224,7 +231,7 @@ output <- extract(trajectories,type="pscf",groupindex=1,threshold=0.4)
 
 
 ###################################################
-### chunk number 26: 
+### chunk number 27: 
 ###################################################
 image(output,col=grey.colors(64),asp=1)
 

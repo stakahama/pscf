@@ -145,7 +145,6 @@ xygrid <- definegrid(longrid=seq(-95,50,5),latgrid=seq(35,93,3))
 
 \section{Evaluate map and grid}
 
-
 Look at the map boundaries and spacing of grid points overlayed on
 map; redefine if necessary. 
 
@@ -158,6 +157,11 @@ showmap(mp,xygrid)
 
 \section{Prepare the trajectories}
 
+All loaded trajectories can be visualized with the following command (may take a while):
+<<eval=False>>=
+showmap(trajectories,mp,type="spaghetti")
+
+@ 
 
 Overlay trajectories on the grid [the last argument can be either
 \verb@identity@ to count number of trajectory points (default), or
@@ -183,7 +187,7 @@ trajectories <- addfirst(trajectories)
 trajectories <- prepareforvis(trajectories,xygrid)
 
 @ 
-an additional argument, \verb@colorvar@, can be passed to \verb@add_diagnosefn@, which will color the trajectories. For instance, \verb@sub(``.+\\_([0-9]+)$'',''\\1'',rownames(coords(trajectories)))@ will color by altitude.
+an additional argument, \verb@colorvar@, can be passed to \verb@addfirst@, which will color the trajectories. For instance, \verb@sub(``.+\\_([0-9]+)$'',''\\1'',rownames(coords(trajectories)))@ will color by altitude if \verb@trajcols=c("10"="lightblue","100"="midnightblue","500"="orange")@ is later passed to the \verb@showmap@ function (\verb@type=''spaghetti''@).
 
 \section{Plotting trajectories}
 

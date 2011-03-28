@@ -159,7 +159,6 @@ Alternatively, you can specify the grid coordinates directly (not run in this ex
 
 \section{Evaluate map and grid}
 
-
 Look at the map boundaries and spacing of grid points overlayed on
 map; redefine if necessary. 
 
@@ -174,6 +173,12 @@ map; redefine if necessary.
 
 \section{Prepare the trajectories}
 
+All loaded trajectories can be visualized with the following command (may take a while):
+\begin{Schunk}
+\begin{Sinput}
+> showmap(trajectories, mp, type = "spaghetti")
+\end{Sinput}
+\end{Schunk}
 
 Overlay trajectories on the grid [the last argument can be either
 \verb@identity@ to count number of trajectory points (default), or
@@ -201,7 +206,7 @@ have to reload trajectories).
 > trajectories <- prepareforvis(trajectories, xygrid)
 \end{Sinput}
 \end{Schunk}
-an additional argument, \verb@colorvar@, can be passed to \verb@add_diagnosefn@, which will color the trajectories. For instance, \verb@sub(``.+\\_([0-9]+)$'',''\\1'',rownames(coords(trajectories)))@ will color by altitude.
+an additional argument, \verb@colorvar@, can be passed to \verb@addfirst@, which will color the trajectories. For instance, \verb@sub(``.+\\_([0-9]+)$'',''\\1'',rownames(coords(trajectories)))@ will color by altitude if \verb@trajcols=c("10"="lightblue","100"="midnightblue","500"="orange")@ is later passed to the \verb@showmap@ function (\verb@type=''spaghetti''@).
 
 \section{Plotting trajectories}
 
@@ -216,7 +221,7 @@ Show all trajectories (as 'spaghetti' and 'density'):
 > showmap(mp, trajectories, type = "density", groupindex = 0, gridlines = TRUE)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-015}
+\includegraphics{figures/fig-016}
 
 Next, visualize number of trajectories/ points per cell.
 
@@ -227,7 +232,7 @@ Next, visualize number of trajectories/ points per cell.
 > cumuldensp(trajectories)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-016}
+\includegraphics{figures/fig-017}
 
 We will only include grid cells for which the number of
 trajectories/points (count/cell) are above 10, approximately (values
@@ -252,7 +257,7 @@ code. Export with graphics desired device (e.g., \verb@pdf()@,
 +     cex.axis = 0.6)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-017}
+\includegraphics{figures/fig-018}
 
 \subsection{Additional examples: shiptracks, other projections (not run)}
 
@@ -360,7 +365,7 @@ difference in appearance.
 > title(main = grpname(trajectories, 1), cex.main = 1.2)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-023}
+\includegraphics{figures/fig-024}
 
 \subsection{Data extraction for export/ customization}
 
@@ -392,6 +397,6 @@ Or plot it in R using \verb@image()@ (which is called internally by
 > image(output, col = grey.colors(64), asp = 1)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{figures/fig-026}
+\includegraphics{figures/fig-027}
 
 \end{document}
