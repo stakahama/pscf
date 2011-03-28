@@ -56,3 +56,7 @@ num2POSIXct <- local({
     ## with tz = "" back to POSIXct time with tz = ""
     as.POSIXct(format(ISOdatetime(1970,1,1,0,0,0,"GMT")+x+d))
 })
+
+seq_chron <- function(from,to,by,format="%m/%d/%y %T")
+  as.chron(seq(unclass(as.chron(from,format)),
+               unclass(as.chron(to,format)),by=by))
