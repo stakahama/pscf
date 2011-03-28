@@ -8,6 +8,9 @@
 
 ## ============== paths/files ======================
 eval(parse(text=readLines("userinputs/runHYSPLIT_parms.txt")))
+addslash <- function(x)
+  if(substring(x,nchar(x),nchar(x))=="/") x else file.path(x,"")
+Meteo_path <- addslash(Meteo_path)
 
 ## =============== process ======================
 filekey <- function(filename) {
