@@ -1,0 +1,9 @@
+---Executables for backtrajectory calculations---
+Old versions (at least as of 2005):
+C:/hsyplit4/exec/hymodelt.exe
+
+New versions (as new as 2011):
+C:/hysplit4/exec/hyts_std.exe
+
+---To export RH or boundary layer height---
+In HYSPLIT GUI, open Advanced Configurations -> Trajectories and adjust output meteorological variables and method of calculation for mixing layer depth. This will generate SETUP.CFG and ASCDATA.CFG in C:/hysplit4/working/. Copy SETUP.CFG and ASCDATA.CFG from C:/hysplit4/working/ to actual working directory (containing CONTROL).
