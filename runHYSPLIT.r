@@ -1,16 +1,15 @@
 ####################
 ## PSCF program
 ## ~runHYSPLIT.r~
-## $Rev$
+## $Rev: 9 $
 ## Sept. 2009
 ## Satoshi Takahama (stakahama@ucsd.edu)
 ####################
 
 ## ============== paths/files ======================
 eval(parse(text=readLines("userinputs/runHYSPLIT_parms.txt")))
-addslash <- function(x)
-  if(substring(x,nchar(x),nchar(x))=="/") x else file.path(x,"")
-Meteo_path <- addslash(Meteo_path)
+Meteo_path <- file.path(Meteo_path,"")
+Output_path <- file.path(Output_path,"")
 
 ## =============== process ======================
 filekey <- function(filename) {
@@ -53,6 +52,6 @@ for( i in 1:nrow(infile) ) {
            Output_path,                             ## outpath
            Output_file,                             ## outfile
            sep="\n",
-           file=Control))
+           filename=Control))
   system(Exec_file)
 }

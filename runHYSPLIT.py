@@ -1,7 +1,7 @@
 ####################
 ## PSCF program
 ## ~runHYSPLIT.py~
-## $Rev$
+## $Rev: 6 $
 ## Sept. 2009
 ## Satoshi Takahama (stakahama@ucsd.edu)
 ####################
@@ -12,12 +12,15 @@ import operator
 import subprocess
 
 ## ============== paths/files ======================
-Input_file = 'userinputs/input.txt'
-Exec_file = './hymodelt.exe'
-Meteo_path = './metdata/'
-Output_path = './trajectories/'
-Output_base = 'tdump-'
-Control = 'CONTROL'
+execfile('userinputs/runHYSPLIT_parms.txt')
+Meteo_path = os.path.join(Meteo_path,'')
+Output_path = os.path.join(Output_path,'')
+# Input_file = 'userinputs/input.txt'
+# Exec_file = './hymodelt.exe'
+# Meteo_path = './metdata/'
+# Output_path = './trajectories/'
+# Output_base = 'tdump-'
+# Control = 'CONTROL'
 
 ## =============== process ======================
 def filekey(filename):
@@ -57,9 +60,10 @@ for row in infile[:3]:
                        row['Run_hours'],
                        row['Vert_coord'],
                        row['Model_top'],
-                       Nmet] +
-                      list(reduce(operator.add,zip([Meteo_path]*Nmet,
-                                                   Meteo_files))) +
+                       str(Nmet)] +
+                      list(reduce(operator.add,
+                                  zip([Meteo_path]*Nmet,
+                                      Meteo_files))) +
                       [Output_path,Output_file]))
     f.close()
     subprocess.call(Exec_file)
