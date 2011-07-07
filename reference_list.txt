@@ -1,0 +1,48 @@
+References:
+- Bahadur, R., Uplinger, T., Russell, L. M., Sive, B. C., Cliff,
+  S. S., Millet, D. B., Goldstein, A., Bates, T. S., 2010. Phenol
+  Groups in Northeastern US Submicrometer Aerosol Particles Produced
+  from Seawater sources. Environmental Science & Technology 44 (7),
+  2542–2548.
+- Day, D. A., Liu, S., Russell, L. M., Ziemann, P. J.,
+  2010. Organonitrate group concentrations in submicron particles with
+  high nitrate and organic fractions in coastal southern
+  california. Atmospheric Environment 44 (16), 1970–1979.
+- Frossard, A. A., Shaw, P. M., Russell, L. M., Kroll, J. H.,
+  Canagaratna, M. R., Worsnop, D. R., Quinn, P. K., Bates, T. S.,
+  2011. Springtime arctic haze contributions of submicron organic
+  particles from european and asian combustion
+  sources. J. Geophys. Res 116 (D05205).
+- Hawkins, L. N., Russell, L. M., 2010. Oxidation of ketone groups in
+  transported biomass burning aerosol from the 2008 Northern
+  California Lightning Series ﬁres. Atmospheric Environment 44 (34),
+  4142–4154. Liu, S., Day, D. A., Shields, J. E., Russell, L. M.,
+  2011. Ozone-driven photochemical formation of carboxylic acid groups
+  from alkane groups. Atmospheric Chemistry and Physics Discussions 11
+  (3), 7189–7233. URL 
+  http://www.atmos-chem-phys-discuss.net/11/7189/2011/
+- Liu, S., Takahama, S., Russell, L. M., Gilardoni, S., Baumgardner,
+  D., 2009. Oxygenated organic functional groups and their sources in
+  single and submicron organic particles in MILAGRO 2006
+  campaign. Atmospheric Chem. Phys. 9 (18), 6849–6863.
+- Russell, L. M., Hawkins, L. N., Frossard, A. A., Quinn, P. K.,
+  Bates, T. S., 2010. Carbohydrate-like composition of submicron
+  atmospheric particles and their production from ocean bubble
+  bursting. Proc. National Acad. Sciences United States Am. 107 (15),
+  6652–6657.
+- Schwartz, R. E., Russell, L. M., Sjostedt, S. J., Vlasenko, A.,
+  Slowik, J. G., Abbatt, J. P. D., Macdonald, A. M., Li, S. M.,
+  Liggio, J., Toom-Sauntry, D., Leaitch, W. R., 2010. Biogenic
+  oxidized organic functional groups in aerosol particles from a
+  mountain forest site and their similarities to laboratory chamber
+  products. Atmospheric Chem. Phys. 10 (11), 5075–5088.
+- Shaw, P. M., Russell, L. M., Jeﬀerson, A., Quinn, P. K.,
+  2010. Arctic organic aerosol measurements show particles from mixed
+  combustion in spring haze and from frost flowers in
+  winter. Geophysical Research Lett. 37.
+- Takahama, S., Schwartz, R. E., Russell, L. M., Macdonald, A. M.,
+  Sharma, S., Leaitch, W. R., 2011. Organic functional groups in
+  aerosol particles from burning and non-burning forest emissions at a
+  high-elevation mountain site. Atmospheric Chemistry and Physics
+  Discussions 11 (1), 2655–2696. URL 
+  http://www.atmos-chem-phys-discuss.net/11/2655/2011/

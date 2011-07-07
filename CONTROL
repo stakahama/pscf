@@ -1,0 +1,19 @@
+10 07 01 07
+1
+32.5200 -117.0370 500.0000
+-1
+0
+1000000.0000
+5
+./metdata/calmex/
+edas.may10.001
+./metdata/calmex/
+edas.may10.002
+./metdata/calmex/
+edas.jun10.001
+./metdata/calmex/
+edas.jun10.002
+./metdata/calmex/
+edas.jul10.001
+./trajectories-calmex-met_2/
+mdump-10_07_01_07-500
